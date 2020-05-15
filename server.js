@@ -17,7 +17,7 @@ var connection = mysql.createConnection({
   port: 3306,
   user: "root",
   password: "root",
-  database: "wishes_db"
+  database: "burgers_db"
 });
 
 connection.connect(function(err) {
@@ -30,16 +30,16 @@ connection.connect(function(err) {
 });
 
 app.get("/", function(req, res) {
-  connection.query("SELECT * FROM wishes;", function(err, data) {
+  connection.query("SELECT * FROM burgers;", function(err, data) {
     if (err) throw err;
 
-    res.render("index", { wishes: data });
+    res.render("index", { burgers: data });
   });
 });
 
 app.post("/", function(req, res) {
 
-  connection.query("INSERT INTO wishes (wish) VALUES (?)", [req.body.wish], function(err, result) {
+  connection.query("INSERT INTO burgers (wish) VALUES (?)", [req.body.wish], function(err, result) {
     if (err) throw err;
 
     res.redirect("/");
