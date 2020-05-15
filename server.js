@@ -25,28 +25,24 @@ connection.connect(function(err) {
     console.error("error connecting: " + err.stack);
     return;
   }
-
   console.log("connected as id " + connection.threadId);
 });
 
 app.get("/", function(req, res) {
   connection.query("SELECT * FROM burgers;", function(err, data) {
     if (err) throw err;
-
     res.render("index", { burgers: data });
   });
 });
 
 app.post("/", function(req, res) {
 
-  connection.query("INSERT INTO burgers (wish) VALUES (?)", [req.body.wish], function(err, result) {
+  connection.query("INSERT INTO burgers (burger_name) VALUES (?)", [req.body.burger_name], function(err, result) {
     if (err) throw err;
-
     res.redirect("/");
   });
 });
 
 app.listen(PORT, function() {
-
   console.log("Server listening on: http://localhost:" + PORT);
 });
