@@ -1,7 +1,7 @@
 const express = require('express');
 
-const connection = require('../config/connection');
-const burgerJs = require('../models/burger');
+const connection = require('../config/connection.js');
+const burgerJs = require('../models/burger.js');
 
 const router = express.Rounter();
 
