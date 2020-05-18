@@ -13,12 +13,14 @@ router.get("/", function(request, response) {
         console.log(handlebarsObj);
         response.render("index", handlebarsObj);
     })
-});
   
-app.post("/", function(req, res) {  
-    connection.query("INSERT INTO burgers (burger_name) VALUES (?)", [req.body.burger_name], function(err, result) {
-        if (err) throw err;
-  
-        res.redirect("/");
+    router.post("/api/burgers", function(request, response) {  
+        burger.insertOne(
+            ["burger_name", "devoured"],
+            [request.body.burger_name, request.body.devoured],
+            function(result) {
+                result.json({ id: result.insertId })
+            }
+        );
     });
 });
