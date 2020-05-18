@@ -1,7 +1,11 @@
-const orm = require("./config/orm.js");
+const express = require("express");
+//const bodyParser = require("body-parser");
+const exphbs = require("express-handlebars");
 
-orm.selectAll("burger_name");
+const app = express();
 
-orm.insertOne("burger_name");
+const PORT = process.env.PORT || 8080;
 
-orm.updateOne("burger_name, devoured");
+app.listen(PORT, function() {
+    console.log("Server listening on: http://localhost:" + PORT);
+});
