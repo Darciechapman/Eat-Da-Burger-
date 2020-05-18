@@ -36,7 +36,7 @@ router.get("/", function(request, response) {
             }
         });
     });
-    
+
     router.deleteOne(condition, function(request, response) {
         let condition = `id = ${request.params.id}`
 
@@ -49,3 +49,5 @@ router.get("/", function(request, response) {
         })
     })
 });
+
+module.exports = router;
