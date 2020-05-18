@@ -1,16 +1,18 @@
 const express = require('express');
 
 const connection = require('../config/connection.js');
-const burgerJs = require('../models/burger.js');
+const burger = require('../models/burger.js');
 
 const router = express.Rounter();
 
-router.get("/", function(req, res) {
-    connection.query("SELECT * FROM burgers;", function(err, data) {
-        if (err) throw err;
-  
-        res.render("index", { burgers: data });
-    });
+router.get("/", function(request, response) {
+    burger.selectAll(function(data) {
+        let handlebarsObj = {
+            burgers: data
+        };
+        console.log(handlebarsObj);
+        response.render("index", handlebarsObj);
+    })
 });
   
 app.post("/", function(req, res) {  
