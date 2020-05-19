@@ -1,53 +1,57 @@
 const express = require('express');
+const burger = require('../models/burgers.js');
 
-const connection = require('../config/connection.js');
-const burger = require('../models/burger.js');
+const { selectAll, insertOne, updateOne, deleteOne } = require('../config/orm');
 
-const router = express.Rounter();
+const router = express.Router();
 
 router.get("/", function(request, response) {
     burger.selectAll(function(data) {
-        let handlebarsObj = {
-            burgers: data
+        var hbsObject = {
+          burgers: data
         };
-        console.log(handlebarsObj);
-        response.render("index", handlebarsObj);
-    })
+        console.log(hbsObject);
+        response.render("index", hbsObject);
+      });
+    });
+    
   
-    router.post("/api/burgers", function(request, response) {  
-        burger.insertOne(
-            ["burger_name", "devoured"],
-            [request.body.burger_name, request.body.devoured],
-            function(result) {
-                result.json({ id: result.insertId })
-            }
-        );
-    });
-
-    router.put("api/burger/:id", function(request, response) {
-        let condition = `id = ${request.params.id}`
-
-        console.log("condition: ", condition);
-        burger.updateOne({ devoured: request.body.devoured }, condition, function(result) {
-            if (result, chagedRows === 0) {
-                return result.status(404).end();
-            } else {
-                result.status(200).end();
-            }
-        });
-    });
-
-    router.deleteOne(condition, function(request, response) {
-        let condition = `id = ${request.params.id}`
-
-        burger.deleteOne(condition, function(result) {
-            if (result, chagedRows === 0) {
-                return result.status(404).end();
-            } else {
-                result.status(200).end();
-            }
-        })
-    })
+router.post("/api/burgers", function(request, response) {  
+    burger.insertOne(
+        ["burger_name", "devoured"],
+        [request.body.burger_name, request.body.devoured],
+        function(result) {
+            response.json({ id: result.insertId })
+        }
+    );
 });
+
+router.put("/api/burgers/:id", function(request, response) {
+    let condition = "id = " + request.params.id;
+
+    console.log("condition", condition);
+
+    burger.updateOne({ devoured: request.body.devoured }, 
+        condition, function(result) {
+        if (result.chagedRows === 0) {
+            response.status(404).end();
+        } else {
+            response.status(200).end();
+        }
+    });
+});
+
+router.delete("/api/burgers/:id", function(request, response) {
+    let condition = "id = " + request.params.id;
+
+    burger.deleteOne(condition, function(result) {
+        if (result.affectedRows === 0) {
+            response.status(404).end();
+        } else {
+            response.status(200).end();
+        }
+    });
+});
+
 
 module.exports = router;
