@@ -1,19 +1,17 @@
 const express = require('express');
 const burger = require('../models/burgers.js');
 
-const { selectAll, insertOne, updateOne, deleteOne } = require('../config/orm');
-
-const router = express.Router();
+let router = express.Router();
 
 router.get("/", function(request, response) {
     burger.selectAll(function(data) {
-        var hbsObject = {
+        let hbsObject = {
           burgers: data
         };
-        console.log(hbsObject);
+        //console.log(hbsObject);
         response.render("index", hbsObject);
-      });
     });
+});
     
   
 router.post("/api/burgers", function(request, response) {  
@@ -29,10 +27,9 @@ router.post("/api/burgers", function(request, response) {
 router.put("/api/burgers/:id", function(request, response) {
     let condition = "id = " + request.params.id;
 
-    console.log("condition", condition);
-
-    burger.updateOne({ devoured: request.body.devoured }, 
-        condition, function(result) {
+    burger.updateOne({ 
+        devoured: request.body.devoured 
+    }, condition, function(result) {
         if (result.chagedRows === 0) {
             response.status(404).end();
         } else {

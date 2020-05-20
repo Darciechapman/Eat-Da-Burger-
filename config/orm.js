@@ -1,22 +1,22 @@
 const connection = require('../config/connection.js');
 
-function createQmarks(num) {
+function printQuestionMarks(num) {
 
-  var arr = [];
+  let arr = [];
 
-  for (var i = 0; i < num; i++) {
+  for (let i = 0; i < num; i++) {
     arr.push("?");
   }
   return arr.toString();
 }
 
-function translateSql(ob) {
+function objToSql(ob) {
 
-  var arr = [];
+  let arr = [];
 
-  for (var key in ob) {
+  for (let key in ob) {
 
-    var value = ob[key];
+    let value = ob[key];
 
     if (Object.hasOwnProperty.call(ob, key)) {
       if (typeof value === "string" && value.indexOf(" ") >= 0) {
@@ -44,7 +44,8 @@ let orm = {
 
   InsertOne: function(table, cols, vals, cb) {
 
-    let queryString = `INSERT INTO ${table} (${cols.toString()}) VALUES (${createQmarks(vals.length)});`;
+    let queryString = `INSERT INTO ${table} (${cols.toString()}) 
+    VALUES (${printQuestionMarks(vals.length)});`;
     console.log(queryString);
 
     connection.query(queryString, vals, function(err, result) {
@@ -57,7 +58,9 @@ let orm = {
 
   updateOne: function(table, objColVals, condition, cb) {
 
-    let queryString = `UPDATE ${table} SET ${translateSql(objColVals)} WHERE ${condition};`;
+    let queryString = `UPDATE ${table} 
+    SET ${objToSql(objColVals)} 
+    WHERE ${condition};`;
     console.log(queryString);
 
     connection.query(queryString, function(err, result) {
@@ -72,6 +75,7 @@ let orm = {
 
     let queryString = `DELETE FROM ${table} WHERE ${condition};`;
     console.log(queryString);
+    console.log(condition);
 
     connection.query(queryString, function(err, result) {      
       if (err) {
@@ -79,7 +83,7 @@ let orm = {
       }
       cb(result);
     });
-  }
+  },
 };
 
 module.exports = orm;

@@ -38,13 +38,14 @@ $(function() {
   
         let id = $(this).data("id");
   
-        $.ajax({url: "/api/burgers/" + id,
+        $.ajax({url: "/api/burgers/" + id, 
             type: "DELETE"
         }).then(
             function() {
-            console.log("deleted burger", id);
-            location.reload();
-        });
+                console.log("deleted burger", id);
+                location.reload();
+            }
+        );
     });
 })
 

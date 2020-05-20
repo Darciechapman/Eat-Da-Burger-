@@ -4,7 +4,7 @@ const exphbs = require("express-handlebars");
 
 const app = express();
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 
 app.use(express.static("public"));
 
